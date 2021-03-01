@@ -13,7 +13,6 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 /**
- *
  * @author portuga
  */
 public class ClientTest {
@@ -91,14 +90,30 @@ public class ClientTest {
 //    }
     
     /**
-     * Test of main method with exit, of class Client.
+     * Test of main method with read command without arguments
+     * of class Client.
+     * @throws java.lang.Exception
      */
     @Test
-    public void testMainExit() throws Exception {
+    public void testMainReadWithoutArgs() throws Exception {
         String[] args = {"username", "localhost", "8888"};
-        String input = "exit\n";
+        String input = "read\n";
         ByteArrayInputStream in = new ByteArrayInputStream(input.getBytes("UTF8"));
-        System.setIn(in); // Sets System.in to the supplied stream
+        System.setIn(in);
+        Client.main(args);
+    }
+    
+    /**
+     * Test of drafting method with line command without arguments
+     * of class Client.
+     * @throws java.lang.Exception
+     */
+    @Test
+    public void testDraftLineWithoutArgs() throws Exception {
+        String[] args = {"username", "localhost", "8888"};
+        String input = "manage foo\nline\npush\n";
+        ByteArrayInputStream in = new ByteArrayInputStream(input.getBytes("UTF8"));
+        System.setIn(in);
         Client.main(args);
     }
     
