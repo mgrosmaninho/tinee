@@ -5,18 +5,25 @@
  */
 
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
+import java.io.PrintStream;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import static org.junit.Assert.*;
 
 /**
- * @author portuga
+ * @author Manuel Gomes Rosmaninho
  */
 public class ClientTest {
     
+    Client cc;
+    private String[] args = {"username", "localhost", "8888"};
+    private InputStream stdin = System.in;
+    private PrintStream stdout = System.out;
+   
     public ClientTest() {
     }
     
@@ -34,60 +41,10 @@ public class ClientTest {
     
     @After
     public void tearDown() {
+        System.setIn(stdin);
+        System.setOut(stdout);
     }
-
-    /**
-     * Test of main method, of class Client.
-     */
-//    @Test
-//    public void testMain() throws Exception {
-//        System.out.println("main");
-//        String[] args = null;
-//        Client.main(args);
-//        // TODO review the generated test code and remove the default call to fail.
-//        fail("The test case is a prototype.");
-//    }
-
-    /**
-     * Test of set method, of class Client.
-     */
-//    @Test
-//    public void testSet() {
-//        System.out.println("set");
-//        String user = "";
-//        String host = "";
-//        int port = 0;
-//        Client instance = new Client();
-//        instance.set(user, host, port);
-//        // TODO review the generated test code and remove the default call to fail.
-//        fail("The test case is a prototype.");
-//    }
-
-    /**
-     * Test of run method, of class Client.
-     */
-//    @Test
-//    public void testRun() throws Exception {
-//        System.out.println("run");
-//        Client instance = new Client();
-//        instance.run();
-//        // TODO review the generated test code and remove the default call to fail.
-//        fail("The test case is a prototype.");
-//    }
-
-    /**
-     * Test of loop method, of class Client.
-     */
-//    @Test
-//    public void testLoop() throws Exception {
-//        System.out.println("loop");
-//        CLFormatter helper = null;
-//        BufferedReader reader = null;
-//        Client instance = new Client();
-//        instance.loop(helper, reader);
-//        // TODO review the generated test code and remove the default call to fail.
-//        fail("The test case is a prototype.");
-//    }
+    
     
     /**
      * Test of main method with read command without arguments
@@ -96,11 +53,10 @@ public class ClientTest {
      */
     @Test
     public void testMainReadWithoutArgs() throws Exception {
-        String[] args = {"username", "localhost", "8888"};
         String input = "read\n";
         ByteArrayInputStream in = new ByteArrayInputStream(input.getBytes("UTF8"));
         System.setIn(in);
-        Client.main(args);
+        cc.main(args);
     }
     
     /**
@@ -110,11 +66,24 @@ public class ClientTest {
      */
     @Test
     public void testDraftLineWithoutArgs() throws Exception {
-        String[] args = {"username", "localhost", "8888"};
         String input = "manage foo\nline\npush\n";
         ByteArrayInputStream in = new ByteArrayInputStream(input.getBytes("UTF8"));
         System.setIn(in);
-        Client.main(args);
+        cc.main(args);
+    }
+    
+    /**
+     * Test of drafting method with line command with
+     * mytext argument with two words (space between words)
+     * of class Client.
+     * @throws java.lang.Exception
+     */
+    @Test
+    public void testDraftLineTwoWords() throws Exception {
+        String input = "manage foo\nline word1 word2\nexit\n";
+        ByteArrayInputStream in = new ByteArrayInputStream(input.getBytes("UTF8"));
+        System.setIn(in);
+        cc.main(args);
     }
     
 }
