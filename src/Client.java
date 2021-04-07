@@ -71,28 +71,30 @@ import sep.tinee.net.message.ReadRequest;
  */
 
 public class Client {
-    String user;
-    String host;
-    int port;
-
+    private String user;
+    private String host;
+    private int port;
+    // change printSplash name to something better
     boolean printSplash = true;
     
-    Client() {
+    /**
+     * Creates a Client
+     * @param ur represents user
+     * @param ht represents host
+     * @param pt represents port
+     */
+    public Client(String ur, String ht, int pt) {
+        this.user = ur;
+        this.host = ht;
+        this.port = pt;
     }
     
     public static void main(String[] args) throws IOException {
         String user = args[0];
         String host = args[1];
         int port = Integer.parseInt(args[2]);
-        Client client = new Client();
-        client.set(user, host, port);
+        Client client = new Client(user, host, port);        
         client.run();
-    }
-
-    public void set(String user, String host, int port) {
-        this.user = user;
-        this.host = host;
-        this.port = port;
     }
 
     // Run the client
@@ -115,7 +117,7 @@ public class Client {
             
             helper = new CLFormatter(this.host, this.port);
 
-            if (this.printSplash = true); {
+            if (this.printSplash == true) {
                 System.out.print(helper.formatSplash(this.user));
             }
             
