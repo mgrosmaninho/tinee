@@ -1,6 +1,7 @@
-/nbproject/
-/dist/
-/build/
+out/
+nbproject/
+dist/
+build/
 .DS_Store
 .idea/
 build.xml
