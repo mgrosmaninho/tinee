@@ -158,55 +158,55 @@ public class Client {
                         formatDraftingMenuPrompt(draftTag, draftLines));
             }
 
-        // Read a line of user input
-        String raw = reader.readLine();
-        if (raw == null) {
-            throw new IOException("Input stream closed while reading.");
-        }
-        // Trim leading/trailing white space, and split words according to spaces
-        List<String> split = Arrays.stream(raw.trim().split("\\ "))
-                .map(x -> x.trim()).collect(Collectors.toList());
-        String cmd = split.remove(0);  // First word is the command keyword
-        String[] rawArgs = split.toArray(new String[split.size()]);
-        // Remainder, if any, are arguments
+            // Read a line of user input
+            String raw = reader.readLine();
+            if (raw == null) {
+                throw new IOException("Input stream closed while reading.");
+            }
+            // Trim leading/trailing white space, and split words according to spaces
+            List<String> split = Arrays.stream(raw.trim().split("\\ "))
+                    .map(x -> x.trim()).collect(Collectors.toList());
+            String cmd = split.remove(0);  // First word is the command keyword
+            String[] rawArgs = split.toArray(new String[split.size()]);
+            // Remainder, if any, are arguments
 
-        // Process user input
-        if ("exit".startsWith(cmd)) {
-            // exit command applies in either state
-            done = true;
-        } // "Main" state commands
-        else if (state.equals("Main")) {
-            if ("manage".startsWith(cmd)) {
-                // Switch to "Drafting" state and start a new "draft"
-                state = "Drafting";
-                draftTag = rawArgs[0];
-            } else if ("read".startsWith(cmd)) {
-                // Read tines on server
-                helper.chan.send(new ReadRequest(rawArgs[0]));
-                ReadReply rep = (ReadReply) helper.chan.receive();
-                System.out.print(
-                helper.formatRead(rawArgs[0], rep.users, rep.lines));
+            // Process user input
+            if ("exit".startsWith(cmd)) {
+                // exit command applies in either state
+                done = true;
+            } // "Main" state commands
+            else if (state.equals("Main")) {
+                if ("manage".startsWith(cmd)) {
+                    // Switch to "Drafting" state and start a new "draft"
+                    state = "Drafting";
+                    draftTag = rawArgs[0];
+                } else if ("read".startsWith(cmd)) {
+                    // Read tines on server
+                    helper.chan.send(new ReadRequest(rawArgs[0]));
+                    ReadReply rep = (ReadReply) helper.chan.receive();
+                    System.out.print(
+                    helper.formatRead(rawArgs[0], rep.users, rep.lines));
+                } else {
+                    System.out.println("Could not parse command/args.");
+                }
+            } // "Drafting" state commands
+            else if (state.equals("Drafting")) {
+                if ("line".startsWith(cmd)) {
+                    // Add a tine message line
+                    String line = Arrays.stream(rawArgs).
+                            collect(Collectors.joining());
+                    draftLines.add(line);
+                } else if ("push".startsWith(cmd)) {
+                    // Send drafted tines to the server, and go back to "Main" state
+                    helper.chan.send(new Push(user, draftTag, draftLines));
+                    state = "Main";
+                    draftTag = null;
+                } else {
+                    System.out.println("Could not parse command/args.");
+                }
             } else {
                 System.out.println("Could not parse command/args.");
             }
-        } // "Drafting" state commands
-        else if (state.equals("Drafting")) {
-            if ("line".startsWith(cmd)) {
-                // Add a tine message line
-                String line = Arrays.stream(rawArgs).
-                        collect(Collectors.joining());
-                draftLines.add(line);
-            } else if ("push".startsWith(cmd)) {
-                // Send drafted tines to the server, and go back to "Main" state
-                helper.chan.send(new Push(user, draftTag, draftLines));
-                state = "Main";
-                draftTag = null;
-            } else {
-                System.out.println("Could not parse command/args.");
-            }
-        } else {
-            System.out.println("Could not parse command/args.");
-        }
         }
         return;
     }
