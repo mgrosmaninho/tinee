@@ -14,7 +14,7 @@ import sep.tinee.net.message.Bye;
 
 /**
  *
- * @author portuga
+ * @author Manuel Gomes Rosmaninho
  */
 public class ClientUI {
     public final String user;
@@ -65,6 +65,11 @@ public class ClientUI {
             String inputLine = reader.readLine();
             Command command;
             
+            if("".equals(inputLine)) {
+                System.out.println(strings.getString("parse_command_message"));
+                continue;
+            }
+            
             List<String> split = Arrays.stream(inputLine.trim().split("\\ "))
                     .map(x -> x.trim()).collect(Collectors.toList());
             String cmd = split.remove(0);
@@ -73,27 +78,27 @@ public class ClientUI {
             switch(cmd) {
             case "read":
                 command = new ReadCommand(channel, inputArgs);
-                command.execute(this);
+                command.execute();
                 System.out.print(strings.getString("main_state_message"));
                 break;
             case "manage":
-                command = new ManageCommand(inputArgs);
-                command.execute(this);
+                command = new ManageCommand(this, inputArgs);
+                command.execute();
                 print(strings.getString("draft_state_message"), draftTag);
                 break;
             case "line":
-                command = new LineCommand(inputArgs);
-                command.execute(this);
+                command = new LineCommand(this, inputArgs);
+                command.execute();
                 print(strings.getString("draft_state_message"), draftTag);
                 break;
             case "push":
-                command = new PushCommand(channel);
-                command.execute(this);
+                command = new PushCommand(this, channel);
+                command.execute();
                 System.out.print(strings.getString("main_state_message"));
                 break;
             case "exit":
                 command = new ExitCommand();
-                command.execute(this);
+                command.execute();
                 done = true;
                 break;
             default:

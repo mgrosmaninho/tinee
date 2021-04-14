@@ -7,18 +7,29 @@ import sep.tinee.net.channel.ClientChannel;
 import sep.tinee.net.message.Push;
 
 /**
- *
- * @author portuga
+ * Implementation of the 'push' user command.
+ * 
+ * @author Manuel Gomes Rosmaninho
  */
 public class PushCommand implements Command {
+    private ClientUI client;
     private final ClientChannel channel;
     
-    public PushCommand(ClientChannel channel) {
+    /**
+     * Constructor for objects of class PushCommand.
+     * @param client
+     * @param channel 
+     */
+    public PushCommand(ClientUI client, ClientChannel channel) {
+        this.client = client;
         this.channel = channel;
     }
     
+    /**
+     * 'Push' was entered.
+     */
     @Override
-    public void execute(ClientUI client) {
+    public void execute() {
         try {
             channel.send(new Push(client.user, client.draftTag, client.draftLines));
             client.draftLines = new LinkedList<>();
