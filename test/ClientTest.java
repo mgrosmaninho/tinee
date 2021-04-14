@@ -6,6 +6,7 @@
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintStream;
 import org.junit.After;
@@ -19,7 +20,7 @@ import org.junit.Test;
  */
 public class ClientTest {
     
-    Client cc;
+    Main main;
     private String[] args = {"username", "localhost", "8888"};
     private InputStream stdin = System.in;
     private PrintStream stdout = System.out;
@@ -47,30 +48,43 @@ public class ClientTest {
     
     
     /**
-     * Test of main method with read command without arguments
-     * of class Client.
-     * @throws java.lang.Exception
+     * Test of Read Command
+     * @throws java.io.IOException
+     * @throws java.lang.ClassNotFoundException
      */
     @Test
-    public void testMainReadWithoutArgs() throws Exception {
-        String input = "read\n";
+    public void testReadCommand() throws IOException, ClassNotFoundException {
+        String input = "read foo\nexit\n";
         ByteArrayInputStream in = new ByteArrayInputStream(input.getBytes("UTF8"));
         System.setIn(in);
-        cc.main(args);
+        main.main(args);
     }
     
     /**
-     * Test of drafting method with line command without arguments
-     * of class Client.
-     * @throws java.lang.Exception
+     * Test of manage command without arguments
+     * @throws java.io.IOException
+     * @throws java.lang.ClassNotFoundException
      */
-    @Test
-    public void testDraftLineWithoutArgs() throws Exception {
-        String input = "manage foo\nline\npush\n";
-        ByteArrayInputStream in = new ByteArrayInputStream(input.getBytes("UTF8"));
-        System.setIn(in);
-        cc.main(args);
-    }
+//    @Test
+//    public void testMainManageWithoutArgs() throws IOException, ClassNotFoundException {
+//        String input = "manage\nexit\n";
+//        ByteArrayInputStream in = new ByteArrayInputStream(input.getBytes("UTF8"));
+//        System.setIn(in);
+//        main.main(args);
+//    }
+    
+    /**
+     * Test of line command without arguments
+     * @throws java.io.IOException
+     * @throws java.lang.ClassNotFoundException
+     */
+//    @Test
+//    public void testDraftLineWithoutArgs() throws IOException, ClassNotFoundException {
+//        String input = "manage foo\nline\nexit\n";
+//        ByteArrayInputStream in = new ByteArrayInputStream(input.getBytes("UTF8"));
+//        System.setIn(in);
+//        main.main(args);
+//    }
     
     /**
      * Test of drafting method with line command with
@@ -78,12 +92,12 @@ public class ClientTest {
      * of class Client.
      * @throws java.lang.Exception
      */
-    @Test
-    public void testDraftLineTwoWords() throws Exception {
-        String input = "manage foo\nline word1 word2\nexit\n";
-        ByteArrayInputStream in = new ByteArrayInputStream(input.getBytes("UTF8"));
-        System.setIn(in);
-        cc.main(args);
-    }
+//    @Test
+//    public void testDraftLineTwoWords() throws Exception {
+//        String input = "manage foo\nline word1 word2\nexit\n";
+//        ByteArrayInputStream in = new ByteArrayInputStream(input.getBytes("UTF8"));
+//        System.setIn(in);
+//        main.main(args);
+//    }
     
 }

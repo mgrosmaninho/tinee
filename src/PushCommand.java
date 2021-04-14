@@ -20,7 +20,6 @@ public class PushCommand implements Command {
     @Override
     public void execute(ClientUI client) {
         try {
-            System.out.println("new push");
             channel.send(new Push(client.user, client.draftTag, client.draftLines));
             client.draftLines = new LinkedList<>();
         } catch (IOException ex) {

@@ -21,12 +21,13 @@ public class ClientUI {
     public final String host;
     public final int port;
     private final ClientChannel channel;
+    private BufferedReader reader;
     private final static String RESOURCE_PATH = "resources/MessageBundle";
     private final ResourceBundle strings;
         
-    String draftTag = null;
-    List<String> draftLines = new LinkedList<>();
-    
+    public String draftTag = null;
+    public List<String> draftLines = new LinkedList<>();
+        
     public ClientUI(String ur, String ht, int pt) {
         this.user = ur;
         this.host = ht;
@@ -34,12 +35,11 @@ public class ClientUI {
         this.channel = new ClientChannel(host, port);
         strings = ResourceBundle.getBundle(RESOURCE_PATH, new Locale("en", "GB"));
     }
-    
+        
     void run() throws IOException, ClassNotFoundException {
-        BufferedReader reader = null;
+        reader = new BufferedReader(new InputStreamReader(System.in));
         
         try {
-            reader = new BufferedReader(new InputStreamReader(System.in));
             print(strings.getString("welcome_message"), user);
             System.out.print(strings.getString("main_state_message"));
             
@@ -94,6 +94,7 @@ public class ClientUI {
             case "exit":
                 command = new ExitCommand();
                 command.execute(this);
+                done = true;
                 break;
             default:
                 System.out.println(strings.getString("parse_command_message"));
@@ -104,4 +105,5 @@ public class ClientUI {
     public void print(String message, Object... params) {
         System.out.print(MessageFormat.format(message, params));
     }
+    
 }

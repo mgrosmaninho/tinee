@@ -6,7 +6,7 @@ import java.util.List;
  * @author portuga
  */
 public class ManageCommand implements Command {
-    String[] inputArgs;
+    private final String[] inputArgs;
     
     public ManageCommand(String[] inputArgs) {
         this.inputArgs = inputArgs;
@@ -14,7 +14,6 @@ public class ManageCommand implements Command {
     
     @Override
     public void execute(ClientUI client) {
-        System.out.println("new manage");
         client.draftTag = inputArgs[0];
         formatDrafting(client.draftTag, client.draftLines);
     }

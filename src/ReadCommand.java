@@ -14,7 +14,7 @@ import sep.tinee.net.message.ReadRequest;
  */
 public class ReadCommand implements Command {
     private final ClientChannel channel;
-    String[] inputArgs;
+    private final String[] inputArgs;
     
     public ReadCommand(ClientChannel channel, String[] inputArgs) {
         this.channel = channel;
@@ -24,7 +24,6 @@ public class ReadCommand implements Command {
     @Override
     public void execute(ClientUI client) {
         try {
-            System.out.println("new read");
             channel.send(new ReadRequest(inputArgs[0]));
             ReadReply reply = (ReadReply) channel.receive();
             System.out.print(formatRead(inputArgs[0], reply.users, reply.lines));

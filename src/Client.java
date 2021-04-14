@@ -89,13 +89,13 @@ public class Client {
         this.port = pt;
     }
     
-    public static void main(String[] args) throws IOException {
-        String user = args[0];
-        String host = args[1];
-        int port = Integer.parseInt(args[2]);
-        Client client = new Client(user, host, port);        
-        client.run();
-    }
+//    public static void main(String[] args) throws IOException {
+//        String user = args[0];
+//        String host = args[1];
+//        int port = Integer.parseInt(args[2]);
+//        Client client = new Client(user, host, port);        
+//        client.run();
+//    }
 
     // Run the client
     @SuppressFBWarnings(
