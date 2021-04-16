@@ -2,8 +2,9 @@
 import java.io.IOException;
 
 /**
- *
- * @author portuga
+ * This main class creates and initialises ClientUI class.
+ * 
+ * @author Manuel Gomes Rosmaninho
  */
 public class Main {
     

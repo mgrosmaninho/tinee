@@ -4,12 +4,14 @@
  * @author Manuel Gomes Rosmaninho
  */
 public class ExitCommand implements Command {
+    private final ClientUI client;
     
     /**
      * Constructor for objects of class ExitCommand.
+     * @param client
      */
-    public ExitCommand() {
-        
+    public ExitCommand(ClientUI client) {
+        this.client = client;
     }
     
     /**
@@ -17,6 +19,7 @@ public class ExitCommand implements Command {
      */
     @Override
     public void execute() {
-        System.out.print("Good bye\n");
+        System.out.print(client.strings.getString("goodbye_message"));
+        client.setState(0);
     }
 }

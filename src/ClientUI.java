@@ -13,7 +13,13 @@ import sep.tinee.net.channel.ClientChannel;
 import sep.tinee.net.message.Bye;
 
 /**
- *
+ * This class is the main class of the 'Client' application.
+ * 'Client' is a very simple, text based client-server application. Users
+ * can read, manage and add tickets.
+ * 
+ * To start this application, create an instance of this class and call
+ * the 'run' method.
+ * 
  * @author Manuel Gomes Rosmaninho
  */
 public class ClientUI {
@@ -21,32 +27,35 @@ public class ClientUI {
     public final String host;
     public final int port;
     private final ClientChannel channel;
-    private BufferedReader reader;
     private final static String RESOURCE_PATH = "resources/MessageBundle";
-    private final ResourceBundle strings;
-        
+    public final ResourceBundle strings;
     public String draftTag = null;
     public List<String> draftLines = new LinkedList<>();
-        
-    public ClientUI(String ur, String ht, int pt) {
-        this.user = ur;
-        this.host = ht;
-        this.port = pt;
+    
+    public static final int DONE = 0;
+    public static final int MAIN = 1;
+    public static final int DRAFT = 2;
+    private int state;
+    
+    public ClientUI(String user, String host, int port) {
+        this.user = user;
+        this.host = host;
+        this.port = port;
         this.channel = new ClientChannel(host, port);
+        this.state = MAIN;
         strings = ResourceBundle.getBundle(RESOURCE_PATH, new Locale("en", "GB"));
     }
         
     void run() throws IOException, ClassNotFoundException {
+        BufferedReader reader;
         reader = new BufferedReader(new InputStreamReader(System.in));
         
         try {
             print(strings.getString("welcome_message"), user);
-            System.out.print(strings.getString("main_state_message"));
-            
             menu(reader, channel);
             
-        } catch(IOException ex) {
-            throw new IOException(ex);
+        } catch(IOException e) {
+            throw new IOException(e);
             
         } finally {
             reader.close();
@@ -60,8 +69,13 @@ public class ClientUI {
     void menu(BufferedReader reader, ClientChannel channel)
             throws IOException, ClassNotFoundException {
         
-        boolean done = false;
         do {
+            if(state==1) {
+                System.out.print(strings.getString("main_state_message"));
+            } else if(state==2) {
+                print(strings.getString("draft_state_message"), formatDrafting(draftTag, draftLines));
+            }
+            
             String inputLine = reader.readLine();
             Command command;
             
@@ -77,38 +91,54 @@ public class ClientUI {
             
             switch(cmd) {
             case "read":
-                command = new ReadCommand(channel, inputArgs);
+                command = new ReadCommand(this, channel, inputArgs);
                 command.execute();
-                System.out.print(strings.getString("main_state_message"));
                 break;
             case "manage":
                 command = new ManageCommand(this, inputArgs);
                 command.execute();
-                print(strings.getString("draft_state_message"), draftTag);
                 break;
             case "line":
                 command = new LineCommand(this, inputArgs);
                 command.execute();
-                print(strings.getString("draft_state_message"), draftTag);
                 break;
             case "push":
                 command = new PushCommand(this, channel);
                 command.execute();
-                System.out.print(strings.getString("main_state_message"));
                 break;
             case "exit":
-                command = new ExitCommand();
+                command = new ExitCommand(this);
                 command.execute();
-                done = true;
                 break;
             default:
                 System.out.println(strings.getString("parse_command_message"));
+                break;
             }
-        } while(!done);
+        } while(DONE!=state);
+    }
+    
+    public void setState(int state) {
+        this.state = state;
+    }
+    
+    public int getState() {
+        return state;
+    }
+    
+    String formatDrafting(String tag, List<String> lines) {
+        StringBuilder b = new StringBuilder("#");
+        b.append(tag);
+        int i = 1;
+        for (String x:lines) {
+            b.append("\n");
+            b.append(String.format("%12d", i++));
+            b.append("  ");
+            b.append(x);
+        }
+        return b.toString();
     }
     
     public void print(String message, Object... params) {
         System.out.print(MessageFormat.format(message, params));
     }
-    
 }

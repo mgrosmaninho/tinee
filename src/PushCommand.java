@@ -12,7 +12,7 @@ import sep.tinee.net.message.Push;
  * @author Manuel Gomes Rosmaninho
  */
 public class PushCommand implements Command {
-    private ClientUI client;
+    private final ClientUI client;
     private final ClientChannel channel;
     
     /**
@@ -30,6 +30,13 @@ public class PushCommand implements Command {
      */
     @Override
     public void execute() {
+        if(client.getState()!=2) {
+            System.out.println(client.strings.getString("parse_command_message"));
+            return;
+        } else if(client.draftLines.isEmpty()) {
+            System.out.println(client.strings.getString("push_command_message"));
+            return;
+        }
         try {
             channel.send(new Push(client.user, client.draftTag, client.draftLines));
             client.draftLines = new LinkedList<>();
@@ -37,5 +44,6 @@ public class PushCommand implements Command {
             Logger.getLogger(PushCommand.class.getName())
                     .log(Level.SEVERE, null, ex);
         }
+        client.setState(1);
     }
 }

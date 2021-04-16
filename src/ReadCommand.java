@@ -14,15 +14,18 @@ import sep.tinee.net.message.ReadRequest;
  * @author Manuel Gomes Rosmaninho
  */
 public class ReadCommand implements Command {
+    private final ClientUI client;
     private final ClientChannel channel;
     private final String[] inputArgs;
     
     /**
      * Constructor for objects of class ReadCommand.
+     * @param client
      * @param channel
      * @param inputArgs 
      */
-    public ReadCommand(ClientChannel channel, String[] inputArgs) {
+    public ReadCommand(ClientUI client, ClientChannel channel, String[] inputArgs) {
+        this.client = client;
         this.channel = channel;
         this.inputArgs = inputArgs;
     }
@@ -30,10 +33,17 @@ public class ReadCommand implements Command {
     /**
      * 'Read' was entered. Sends a read request to server and prints
      * its reply.
-     * @param client 
      */
     @Override
     public void execute() {
+        if(client.getState()!=1) {
+            System.out.println(client.strings.getString("parse_command_message"));
+            return;
+        } else if(inputArgs.length < 1) {
+            System.out.println(client.strings.getString("read_command_message"));
+            return;
+        }
+        
         try {
             channel.send(new ReadRequest(inputArgs[0]));
             ReadReply reply = (ReadReply) channel.receive();
