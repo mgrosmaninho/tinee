@@ -37,6 +37,12 @@ public class ClientUI {
     public static final int DRAFT = 2;
     private int state;
     
+    /**
+     * Create the client
+     * @param user
+     * @param host
+     * @param port 
+     */
     public ClientUI(String user, String host, int port) {
         this.user = user;
         this.host = host;
@@ -45,8 +51,13 @@ public class ClientUI {
         this.state = MAIN;
         strings = ResourceBundle.getBundle(RESOURCE_PATH, new Locale("en", "GB"));
     }
-        
-    void run() throws IOException, ClassNotFoundException {
+    
+    /**
+     * Main run routine.
+     * @throws IOException
+     * @throws ClassNotFoundException 
+     */
+    public void run() throws IOException, ClassNotFoundException {
         BufferedReader reader;
         reader = new BufferedReader(new InputStreamReader(System.in));
         
@@ -66,14 +77,22 @@ public class ClientUI {
         }
     }
     
-    void menu(BufferedReader reader, ClientChannel channel)
+    /**
+     * Reads the user input commands. Loops until end of client.
+     * @param reader
+     * @param channel
+     * @throws IOException
+     * @throws ClassNotFoundException 
+     */
+    private void menu(BufferedReader reader, ClientChannel channel)
             throws IOException, ClassNotFoundException {
         
         do {
             if(state==1) {
                 System.out.print(strings.getString("main_state_message"));
             } else if(state==2) {
-                print(strings.getString("draft_state_message"), formatDrafting(draftTag, draftLines));
+                print(strings.getString("draft_state_message")
+                        , printFormatDrafting(draftTag, draftLines));
             }
             
             String inputLine = reader.readLine();
@@ -87,8 +106,8 @@ public class ClientUI {
             List<String> split = Arrays.stream(inputLine.trim().split("\\ "))
                     .map(x -> x.trim()).collect(Collectors.toList());
             String cmd = split.remove(0);
-            String[] inputArgs = split.toArray(new String[split.size()]);
-            
+            String[] inputArgs = split.stream().toArray(String[]::new);
+                        
             switch(cmd) {
             case "read":
                 command = new ReadCommand(this, channel, inputArgs);
@@ -117,15 +136,23 @@ public class ClientUI {
         } while(DONE!=state);
     }
     
+    /**
+     * Sets the current state.
+     * @param state 
+     */
     public void setState(int state) {
         this.state = state;
     }
     
+    /**
+     * Return the current state.
+     * @return 
+     */
     public int getState() {
         return state;
     }
     
-    String formatDrafting(String tag, List<String> lines) {
+    public String printFormatDrafting(String tag, List<String> lines) {
         StringBuilder b = new StringBuilder("#");
         b.append(tag);
         int i = 1;
@@ -138,6 +165,11 @@ public class ClientUI {
         return b.toString();
     }
     
+    /**
+     * Print out the messages for the user.
+     * @param message
+     * @param params 
+     */
     public void print(String message, Object... params) {
         System.out.print(MessageFormat.format(message, params));
     }

@@ -33,8 +33,7 @@ public class LineCommand implements Command {
             System.out.println(client.strings.getString("line_command_message"));
             return;
         }
-        System.out.print(Arrays.toString(inputArgs));
-        String line = Arrays.stream(inputArgs).collect(Collectors.joining());
+        String line = Arrays.stream(inputArgs).collect(Collectors.joining(" "));
         client.draftLines.add(line);
     }
 }

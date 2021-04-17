@@ -189,6 +189,19 @@ public class ClientUITest {
     }
     
     /**
+     * Test of Line Command with multiple arguments
+     * @throws java.io.IOException
+     * @throws java.lang.ClassNotFoundException
+     */
+    @Test
+    public void testLineCommandMultipleArgs() throws IOException, ClassNotFoundException {
+        String input = "manage foo\nline foo1 foo2 foo3\npush\nread foo\nexit\n";
+        ByteArrayInputStream in = new ByteArrayInputStream(input.getBytes("UTF8"));
+        System.setIn(in);
+        main.main(args);
+    }
+    
+    /**
      * Test of Push Command
      * @throws java.io.IOException
      * @throws java.lang.ClassNotFoundException
