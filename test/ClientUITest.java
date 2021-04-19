@@ -240,4 +240,56 @@ public class ClientUITest {
         main.main(args);
     }
     
+    /**
+     * Test of Undo Command out of Draft State
+     * @throws java.io.IOException
+     * @throws java.lang.ClassNotFoundException
+     */
+    @Test
+    public void testUndoCommandOutDraftState() throws IOException, ClassNotFoundException {
+        String input = "undo\nexit\n";
+        ByteArrayInputStream in = new ByteArrayInputStream(input.getBytes("UTF8"));
+        System.setIn(in);
+        main.main(args);
+    }
+    
+    /**
+     * Test of Undo Command with empty list
+     * @throws java.io.IOException
+     * @throws java.lang.ClassNotFoundException
+     */
+    @Test
+    public void testUndoCommandEmpty() throws IOException, ClassNotFoundException {
+        String input = "manage foo\nundo\nexit\n";
+        ByteArrayInputStream in = new ByteArrayInputStream(input.getBytes("UTF8"));
+        System.setIn(in);
+        main.main(args);
+    }
+    
+    /**
+     * Test of Undo Command with 1 undo
+     * @throws java.io.IOException
+     * @throws java.lang.ClassNotFoundException
+     */
+    @Test
+    public void testUndoCommand1Undo() throws IOException, ClassNotFoundException {
+        String input = "manage foo\nline foo1\nundo\nexit\n";
+        ByteArrayInputStream in = new ByteArrayInputStream(input.getBytes("UTF8"));
+        System.setIn(in);
+        main.main(args);
+    }
+    
+    /**
+     * Test of Undo Command with 2 undo
+     * @throws java.io.IOException
+     * @throws java.lang.ClassNotFoundException
+     */
+    @Test
+    public void testUndoCommand2Undos() throws IOException, ClassNotFoundException {
+        String input = "manage foo\nline foo1\nline foo2\nundo\nundo\nexit\n";
+        ByteArrayInputStream in = new ByteArrayInputStream(input.getBytes("UTF8"));
+        System.setIn(in);
+        main.main(args);
+    }
+    
 }
