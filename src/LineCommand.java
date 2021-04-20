@@ -13,8 +13,8 @@ public class LineCommand implements Command {
     
     /**
      * Constructor for objects of class LineCommand.
-     * @param client
-     * @param inputArgs 
+     * @param client the client UI
+     * @param inputArgs the command line arguments
      */
     public LineCommand(ClientUI client, String[] inputArgs) {
         this.client = client;

@@ -17,8 +17,8 @@ public class PushCommand implements Command {
     
     /**
      * Constructor for objects of class PushCommand.
-     * @param client
-     * @param channel 
+     * @param client the client UI
+     * @param channel the communication to the server
      */
     public PushCommand(ClientUI client, ClientChannel channel) {
         this.client = client;

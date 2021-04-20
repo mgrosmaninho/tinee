@@ -8,7 +8,7 @@ public class ExitCommand implements Command {
     
     /**
      * Constructor for objects of class ExitCommand.
-     * @param client
+     * @param client the client UI
      */
     public ExitCommand(ClientUI client) {
         this.client = client;

@@ -20,9 +20,9 @@ public class ReadCommand implements Command {
     
     /**
      * Constructor for objects of class ReadCommand.
-     * @param client
-     * @param channel
-     * @param inputArgs 
+     * @param client the client UI
+     * @param channel the communication to the server
+     * @param inputArgs the command line arguments
      */
     public ReadCommand(ClientUI client, ClientChannel channel, String[] inputArgs) {
         this.client = client;

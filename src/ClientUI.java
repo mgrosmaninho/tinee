@@ -40,9 +40,9 @@ public class ClientUI {
     
     /**
      * Create the client
-     * @param user
-     * @param host
-     * @param port 
+     * @param user the username
+     * @param host the host name
+     * @param port the port number
      */
     public ClientUI(String user, String host, int port) {
         this.user = user;
@@ -81,7 +81,7 @@ public class ClientUI {
     /**
      * Reads the user input commands. Loops until end of client.
      * @param reader
-     * @param channel
+     * @param channel the communication to the server
      * @throws IOException
      * @throws ClassNotFoundException 
      */
@@ -143,7 +143,7 @@ public class ClientUI {
     
     /**
      * Sets the current state.
-     * @param state 
+     * @param state the current state
      */
     public void setState(int state) {
         this.state = state;
@@ -151,12 +151,18 @@ public class ClientUI {
     
     /**
      * Return the current state.
-     * @return 
+     * @return the current state
      */
     public int getState() {
         return state;
     }
     
+    /**
+     * 
+     * @param tag
+     * @param lines
+     * @return 
+     */
     public String printFormatDrafting(String tag, List<String> lines) {
         StringBuilder b = new StringBuilder("#");
         b.append(tag);
@@ -172,8 +178,8 @@ public class ClientUI {
     
     /**
      * Print out the messages for the user.
-     * @param message
-     * @param params 
+     * @param message the message itself
+     * @param params the parameters in the message
      */
     public void print(String message, Object... params) {
         System.out.print(MessageFormat.format(message, params));

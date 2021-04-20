@@ -9,8 +9,8 @@ public class ManageCommand implements Command {
     
     /**
      * Constructor for objects of class ManageCommand.
-     * @param client
-     * @param inputArgs 
+     * @param client the client UI
+     * @param inputArgs the command line arguments
      */
     public ManageCommand(ClientUI client, String[] inputArgs) {
         this.client = client;
