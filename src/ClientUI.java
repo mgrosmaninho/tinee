@@ -8,7 +8,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
-import java.util.Stack;
 import java.util.stream.Collectors;
 import sep.tinee.net.channel.ClientChannel;
 import sep.tinee.net.message.Bye;
@@ -115,7 +114,7 @@ public class ClientUI {
                 command.execute();
                 break;
             case "manage":
-                command = new ManageCommand(this, inputArgs);
+                command = new ManageCommand(this, channel, inputArgs);
                 command.execute();
                 break;
             case "line":
@@ -128,6 +127,10 @@ public class ClientUI {
                 break;
             case "push":
                 command = new PushCommand(this, channel);
+                command.execute();
+                break;
+            case "close":
+                command = new CloseCommand(this, channel);
                 command.execute();
                 break;
             case "exit":
