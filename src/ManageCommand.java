@@ -41,13 +41,15 @@ public class ManageCommand implements Command {
             return;
         }
         try {
-            client.draftTag = inputArgs[0];
-            channel.send(new ReadRequest(client.draftTag));
+            client.setDraftTag(inputArgs[0]);
+            channel.send(new ReadRequest(client.getDraftTag()));
             ReadReply reply = (ReadReply) channel.receive();
-            String replyLine = reply.lines.get(reply.lines.size() - 1);
-            if(Push.CLOSE_LINE.equals(replyLine)) {
-                System.out.println(client.strings.getString("manage_close_command_message"));
-                return;
+            if(!reply.lines.isEmpty()) {
+                String replyLine = reply.lines.get(reply.lines.size() - 1);
+                if(Push.CLOSE_LINE.equals(replyLine)) {
+                    System.out.println(client.strings.getString("manage_close_command_message"));
+                    return;
+                }
             }
         } catch (IOException | ClassNotFoundException ex) {
             Logger.getLogger(ReadCommand.class.getName())

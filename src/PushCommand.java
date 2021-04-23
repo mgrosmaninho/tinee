@@ -33,12 +33,12 @@ public class PushCommand implements Command {
         if(client.getState()!=2) {
             System.out.println(client.strings.getString("parse_command_message"));
             return;
-        } else if(client.draftLines.isEmpty()) {
+        } else if(client.getDraftLines().isEmpty()) {
             System.out.println(client.strings.getString("push_command_message"));
             return;
         }
         try {
-            channel.send(new Push(client.user, client.draftTag, client.draftLines));
+            channel.send(new Push(client.user, client.getDraftTag(), client.getDraftLines()));
             client.draftLines = new LinkedList<>();
         } catch (IOException ex) {
             Logger.getLogger(PushCommand.class.getName())

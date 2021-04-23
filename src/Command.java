@@ -9,5 +9,5 @@ public interface Command {
     /**
      * Execute this command
      */
-    public void execute();
+    void execute();
 }

@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.text.MessageFormat;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
@@ -29,7 +30,7 @@ public class ClientUI {
     private final ClientChannel channel;
     private final static String RESOURCE_PATH = "resources/MessageBundle";
     public final ResourceBundle strings;
-    public String draftTag = null;
+    private String draftTag;
     public List<String> draftLines = new LinkedList<>();
     
     public static final int DONE = 0;
@@ -54,8 +55,8 @@ public class ClientUI {
     
     /**
      * Main run routine.
-     * @throws IOException
-     * @throws ClassNotFoundException 
+     * @throws IOException IOException
+     * @throws ClassNotFoundException ClassNotFoundException
      */
     public void run() throws IOException, ClassNotFoundException {
         BufferedReader reader;
@@ -79,15 +80,14 @@ public class ClientUI {
     
     /**
      * Reads the user input commands. Loops until end of client.
-     * @param reader
+     * @param reader the BufferedReader
      * @param channel the communication to the server
-     * @throws IOException
-     * @throws ClassNotFoundException 
+     * @throws IOException IOException
      */
     private void menu(BufferedReader reader, ClientChannel channel)
-            throws IOException, ClassNotFoundException {
+            throws IOException {
         
-        do {
+        while(DONE!=state) {
             if(state==1) {
                 System.out.print(strings.getString("main_state_message"));
             } else if(state==2) {
@@ -104,44 +104,76 @@ public class ClientUI {
             }
             
             List<String> split = Arrays.stream(inputLine.trim().split("\\ "))
-                    .map(x -> x.trim()).collect(Collectors.toList());
+                    .map(String::trim).collect(Collectors.toList());
             String cmd = split.remove(0);
             String[] inputArgs = split.stream().toArray(String[]::new);
-                        
-            switch(cmd) {
-            case "read":
-                command = new ReadCommand(this, channel, inputArgs);
-                command.execute();
-                break;
-            case "manage":
-                command = new ManageCommand(this, channel, inputArgs);
-                command.execute();
-                break;
-            case "line":
-                command = new LineCommand(this, inputArgs);
-                command.execute();
-                break;
-            case "undo":
-                command = new UndoCommand(this);
-                command.execute();
-                break;
-            case "push":
-                command = new PushCommand(this, channel);
-                command.execute();
-                break;
-            case "close":
-                command = new CloseCommand(this, channel);
-                command.execute();
-                break;
-            case "exit":
-                command = new ExitCommand(this);
-                command.execute();
-                break;
-            default:
-                System.out.println(strings.getString("parse_command_message"));
-                break;
+
+            switch (cmd) {
+                case "read":
+                    command = new ReadCommand(this, channel, inputArgs);
+                    command.execute();
+                    break;
+                case "manage":
+                    command = new ManageCommand(this, channel, inputArgs);
+                    command.execute();
+                    break;
+                case "line":
+                    command = new LineCommand(this, inputArgs);
+                    command.execute();
+                    break;
+                case "undo":
+                    command = new UndoCommand(this);
+                    command.execute();
+                    break;
+                case "push":
+                    command = new PushCommand(this, channel);
+                    command.execute();
+                    break;
+                case "close":
+                    command = new CloseCommand(this, channel);
+                    command.execute();
+                    break;
+                case "exit":
+                    command = new ExitCommand(this);
+                    command.execute();
+                    break;
+                default:
+                    System.out.println(strings.getString("parse_command_message"));
+                    break;
             }
-        } while(DONE!=state);
+        }
+    }
+    
+    /**
+     * Set DraftTag.
+     * @param inputArgs String to draftTag
+     */
+    public void setDraftTag(String inputArgs) {
+        draftTag = inputArgs;
+    }
+    
+    /**
+     * Return the draftTag.
+     * @return draftTag
+     */
+    public String getDraftTag() {
+        return draftTag;
+    }
+    
+    /**
+     * Add String to draftLines.
+     * @param line String to draftLines
+     */
+    public void addDraftLines(String line) {
+        draftLines.add(line);
+    }
+    
+    /**
+     * Return the draftLines.
+     * @return draftLines
+     */
+    public List<String> getDraftLines() {
+        return Collections.unmodifiableList(draftLines);
     }
     
     /**
@@ -162,12 +194,12 @@ public class ClientUI {
     
     /**
      * 
-     * @param tag
-     * @param lines
-     * @return 
+     * @param tag draftTags
+     * @param lines draftLines
+     * @return toString for Drafting State
      */
     public String printFormatDrafting(String tag, List<String> lines) {
-        StringBuilder b = new StringBuilder("#");
+        StringBuilder b = new StringBuilder("# ");
         b.append(tag);
         int i = 1;
         for (String x:lines) {

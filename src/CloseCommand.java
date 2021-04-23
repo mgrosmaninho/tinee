@@ -36,12 +36,12 @@ public class CloseCommand implements Command {
             return;
         }
         try {
-            channel.send(new ReadRequest(client.draftTag));
+            channel.send(new ReadRequest(client.getDraftTag()));
             ReadReply reply = (ReadReply) channel.receive();
             String replyUser = reply.users.get(0);
             if(client.user.equals(replyUser)) {
-                client.draftLines.add(Push.CLOSE_LINE);
-                channel.send(new Push(client.user, client.draftTag, client.draftLines));
+                client.addDraftLines(Push.CLOSE_LINE);
+                channel.send(new Push(client.user, client.getDraftTag(), client.getDraftLines()));
             } else {
                 System.out.println(client.strings.getString("close_command_message"));
             }

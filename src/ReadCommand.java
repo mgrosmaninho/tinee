@@ -56,10 +56,10 @@ public class ReadCommand implements Command {
     
     /**
      * Method to format the output for the Read Command.
-     * @param tag
-     * @param users
-     * @param read
-     * @return 
+     * @param tag inputArgs[0]
+     * @param users user from server
+     * @param read lines from server
+     * @return toString with tinees from server
      */
     String formatRead(String tag, List<String> users, List<String> read) {
         StringBuilder b = new StringBuilder("Read: # ");

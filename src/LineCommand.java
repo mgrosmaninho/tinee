@@ -1,7 +1,4 @@
 
-import java.util.Arrays;
-import java.util.stream.Collectors;
-
 /**
  * Implementation of the 'line' user command.
  * 
@@ -33,7 +30,7 @@ public class LineCommand implements Command {
             System.out.println(client.strings.getString("line_command_message"));
             return;
         }
-        String line = Arrays.stream(inputArgs).collect(Collectors.joining(" "));
-        client.draftLines.add(line);
+        String line = String.join(" ", inputArgs);
+        client.addDraftLines(line);
     }
 }

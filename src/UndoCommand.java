@@ -1,3 +1,4 @@
+
 /**
  * Implementation of the 'undo' user command.
  * 
@@ -8,7 +9,7 @@ public class UndoCommand implements Command {
     
     /**
      * Constructor for objects of class UndoCommand.
-     * @param client
+     * @param client ClientUI
      */
     public UndoCommand(ClientUI client) {
         this.client = client;
@@ -21,7 +22,7 @@ public class UndoCommand implements Command {
         if(client.getState()!=2) {
             System.out.println(client.strings.getString("parse_command_message"));
             return;
-        } else if(client.draftLines.isEmpty()) {
+        } else if(client.getDraftLines().isEmpty()) {
             System.out.println(client.strings.getString("undo_command_message"));
             return;
         }

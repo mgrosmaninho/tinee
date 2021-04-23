@@ -4,26 +4,28 @@
  * and open the template in the editor.
  */
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.PrintStream;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import static org.junit.Assert.*;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
+
+import org.junit.*;
+import sep.tinee.server.Server;
 
 /**
  * @author Manuel Gomes Rosmaninho
  */
 public class ClientUITest {
-    
-    private Main main;
+
+    private ClientUI client;
+    private Server server;
     private final String[] args = {"username", "localhost", "8888"};
-    private final InputStream stdin = System.in;
-    private final PrintStream stdout = System.out;
     
+    private final InputStream systemIn = System.in;
+    private final PrintStream systemOut = System.out;
+    
+    private ByteArrayInputStream testIn;
+    private ByteArrayOutputStream testOut;
+        
     public ClientUITest() {
     }
     
@@ -36,15 +38,26 @@ public class ClientUITest {
     }
     
     @Before
-    public void setUp() {
+    public void setUp() throws IOException {
+        //client = new ClientUI("username", "localhost", 8888);
+        testOut = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(testOut));
+        //System.setOut(systemOut);
+        this.server = new Server(8888);
+        new Thread(() -> this.server.run()).start();
+    }
+    
+    public String asString() {
+        return testOut.toString();
     }
     
     @After
     public void tearDown() {
-        System.setIn(stdin);
-        System.setOut(stdout);
+        System.setIn(systemIn);
+        System.setOut(systemOut);
+        this.server.close();
     }
-
+    
     /**
      * Test of Exit Command in Main State
      * @throws java.io.IOException
@@ -53,9 +66,9 @@ public class ClientUITest {
     @Test
     public void testExitCommandInMainState() throws IOException, ClassNotFoundException {
         String input = "exit\n";
-        ByteArrayInputStream in = new ByteArrayInputStream(input.getBytes("UTF8"));
+        ByteArrayInputStream in = new ByteArrayInputStream(input.getBytes(StandardCharsets.UTF_8));
         System.setIn(in);
-        main.main(args);
+        Main.main(args);
     }
     
     /**
@@ -66,9 +79,9 @@ public class ClientUITest {
     @Test
     public void testExitCommandInDraftState() throws IOException, ClassNotFoundException {
         String input = "manage foo\nexit\n";
-        ByteArrayInputStream in = new ByteArrayInputStream(input.getBytes("UTF8"));
+        ByteArrayInputStream in = new ByteArrayInputStream(input.getBytes(StandardCharsets.UTF_8));
         System.setIn(in);
-        main.main(args);
+        Main.main(args);
     }
     
     /**
@@ -79,9 +92,9 @@ public class ClientUITest {
     @Test
     public void testReadCommand() throws IOException, ClassNotFoundException {
         String input = "read foo\nexit\n";
-        ByteArrayInputStream in = new ByteArrayInputStream(input.getBytes("UTF8"));
+        ByteArrayInputStream in = new ByteArrayInputStream(input.getBytes(StandardCharsets.UTF_8));
         System.setIn(in);
-        main.main(args);
+        Main.main(args);
     }
     
     /**
@@ -92,9 +105,9 @@ public class ClientUITest {
     @Test
     public void testReadCommandWithoutArgs() throws IOException, ClassNotFoundException {
         String input = "read\nexit\n";
-        ByteArrayInputStream in = new ByteArrayInputStream(input.getBytes("UTF8"));
+        ByteArrayInputStream in = new ByteArrayInputStream(input.getBytes(StandardCharsets.UTF_8));
         System.setIn(in);
-        main.main(args);
+        Main.main(args);
     }
     
     /**
@@ -105,9 +118,9 @@ public class ClientUITest {
     @Test
     public void testReadCommandOutMainState() throws IOException, ClassNotFoundException {
         String input = "manage foo\nread foo\nexit\n";
-        ByteArrayInputStream in = new ByteArrayInputStream(input.getBytes("UTF8"));
+        ByteArrayInputStream in = new ByteArrayInputStream(input.getBytes(StandardCharsets.UTF_8));
         System.setIn(in);
-        main.main(args);
+        Main.main(args);
     }
     
     /**
@@ -118,9 +131,9 @@ public class ClientUITest {
     @Test
     public void testManageCommand() throws IOException, ClassNotFoundException {
         String input = "manage foo\nexit\n";
-        ByteArrayInputStream in = new ByteArrayInputStream(input.getBytes("UTF8"));
+        ByteArrayInputStream in = new ByteArrayInputStream(input.getBytes(StandardCharsets.UTF_8));
         System.setIn(in);
-        main.main(args);
+        Main.main(args);
     }
     
     /**
@@ -131,9 +144,9 @@ public class ClientUITest {
     @Test
     public void testManageCommandWithoutArgs() throws IOException, ClassNotFoundException {
         String input = "manage\nexit\n";
-        ByteArrayInputStream in = new ByteArrayInputStream(input.getBytes("UTF8"));
+        ByteArrayInputStream in = new ByteArrayInputStream(input.getBytes(StandardCharsets.UTF_8));
         System.setIn(in);
-        main.main(args);
+        Main.main(args);
     }
     
     /**
@@ -144,9 +157,9 @@ public class ClientUITest {
     @Test
     public void testManageCommandOutMainState() throws IOException, ClassNotFoundException {
         String input = "manage foo\nmanage foo\nexit\n";
-        ByteArrayInputStream in = new ByteArrayInputStream(input.getBytes("UTF8"));
+        ByteArrayInputStream in = new ByteArrayInputStream(input.getBytes(StandardCharsets.UTF_8));
         System.setIn(in);
-        main.main(args);
+        Main.main(args);
     }
     
     /**
@@ -157,9 +170,9 @@ public class ClientUITest {
     @Test
     public void testLineCommand() throws IOException, ClassNotFoundException {
         String input = "manage foo\nline foo1\nexit\n";
-        ByteArrayInputStream in = new ByteArrayInputStream(input.getBytes("UTF8"));
+        ByteArrayInputStream in = new ByteArrayInputStream(input.getBytes(StandardCharsets.UTF_8));
         System.setIn(in);
-        main.main(args);
+        Main.main(args);
     }
     
     /**
@@ -170,9 +183,9 @@ public class ClientUITest {
     @Test
     public void testLineCommandWithoutArgs() throws IOException, ClassNotFoundException {
         String input = "manage foo\nline\nexit\n";
-        ByteArrayInputStream in = new ByteArrayInputStream(input.getBytes("UTF8"));
+        ByteArrayInputStream in = new ByteArrayInputStream(input.getBytes(StandardCharsets.UTF_8));
         System.setIn(in);
-        main.main(args);
+        Main.main(args);
     }
     
     /**
@@ -183,9 +196,9 @@ public class ClientUITest {
     @Test
     public void testLineCommandOutDraftState() throws IOException, ClassNotFoundException {
         String input = "line foo1\nexit\n";
-        ByteArrayInputStream in = new ByteArrayInputStream(input.getBytes("UTF8"));
+        ByteArrayInputStream in = new ByteArrayInputStream(input.getBytes(StandardCharsets.UTF_8));
         System.setIn(in);
-        main.main(args);
+        Main.main(args);
     }
     
     /**
@@ -196,9 +209,9 @@ public class ClientUITest {
     @Test
     public void testLineCommandMultipleArgs() throws IOException, ClassNotFoundException {
         String input = "manage foo\nline foo1 foo2 foo3\npush\nread foo\nexit\n";
-        ByteArrayInputStream in = new ByteArrayInputStream(input.getBytes("UTF8"));
+        ByteArrayInputStream in = new ByteArrayInputStream(input.getBytes(StandardCharsets.UTF_8));
         System.setIn(in);
-        main.main(args);
+        Main.main(args);
     }
     
     /**
@@ -209,9 +222,9 @@ public class ClientUITest {
     @Test
     public void testPushCommand() throws IOException, ClassNotFoundException {
         String input = "manage foo\nline foo1\npush\nexit\n";
-        ByteArrayInputStream in = new ByteArrayInputStream(input.getBytes("UTF8"));
+        ByteArrayInputStream in = new ByteArrayInputStream(input.getBytes(StandardCharsets.UTF_8));
         System.setIn(in);
-        main.main(args);
+        Main.main(args);
     }
     
     /**
@@ -222,9 +235,9 @@ public class ClientUITest {
     @Test
     public void testPushCommandWithoutInput() throws IOException, ClassNotFoundException {
         String input = "manage foo\npush\nexit\n";
-        ByteArrayInputStream in = new ByteArrayInputStream(input.getBytes("UTF8"));
+        ByteArrayInputStream in = new ByteArrayInputStream(input.getBytes(StandardCharsets.UTF_8));
         System.setIn(in);
-        main.main(args);
+        Main.main(args);
     }
     
     /**
@@ -235,9 +248,9 @@ public class ClientUITest {
     @Test
     public void testPushCommandOutDraftState() throws IOException, ClassNotFoundException {
         String input = "push\nexit\n";
-        ByteArrayInputStream in = new ByteArrayInputStream(input.getBytes("UTF8"));
+        ByteArrayInputStream in = new ByteArrayInputStream(input.getBytes(StandardCharsets.UTF_8));
         System.setIn(in);
-        main.main(args);
+        Main.main(args);
     }
     
     /**
@@ -248,9 +261,9 @@ public class ClientUITest {
     @Test
     public void testUndoCommandOutDraftState() throws IOException, ClassNotFoundException {
         String input = "undo\nexit\n";
-        ByteArrayInputStream in = new ByteArrayInputStream(input.getBytes("UTF8"));
+        ByteArrayInputStream in = new ByteArrayInputStream(input.getBytes(StandardCharsets.UTF_8));
         System.setIn(in);
-        main.main(args);
+        Main.main(args);
     }
     
     /**
@@ -261,9 +274,9 @@ public class ClientUITest {
     @Test
     public void testUndoCommandEmpty() throws IOException, ClassNotFoundException {
         String input = "manage foo\nundo\nexit\n";
-        ByteArrayInputStream in = new ByteArrayInputStream(input.getBytes("UTF8"));
+        ByteArrayInputStream in = new ByteArrayInputStream(input.getBytes(StandardCharsets.UTF_8));
         System.setIn(in);
-        main.main(args);
+        Main.main(args);
     }
     
     /**
@@ -274,9 +287,9 @@ public class ClientUITest {
     @Test
     public void testUndoCommand1Undo() throws IOException, ClassNotFoundException {
         String input = "manage foo\nline foo1\nundo\nexit\n";
-        ByteArrayInputStream in = new ByteArrayInputStream(input.getBytes("UTF8"));
+        ByteArrayInputStream in = new ByteArrayInputStream(input.getBytes(StandardCharsets.UTF_8));
         System.setIn(in);
-        main.main(args);
+        Main.main(args);
     }
     
     /**
@@ -285,11 +298,48 @@ public class ClientUITest {
      * @throws java.lang.ClassNotFoundException
      */
     @Test
-    public void testUndoCommand2Undos() throws IOException, ClassNotFoundException {
+    public void testUndoCommand2Undo() throws IOException, ClassNotFoundException {
         String input = "manage foo\nline foo1\nline foo2\nundo\nundo\nexit\n";
-        ByteArrayInputStream in = new ByteArrayInputStream(input.getBytes("UTF8"));
+        ByteArrayInputStream in = new ByteArrayInputStream(input.getBytes(StandardCharsets.UTF_8));
         System.setIn(in);
-        main.main(args);
+        Main.main(args);
     }
     
+    @Test
+    public void test() throws IOException, ClassNotFoundException {
+        String input = "exit\n";
+        String expect = "Good bye";
+        ByteArrayInputStream in = new ByteArrayInputStream(input.getBytes(StandardCharsets.UTF_8));
+        System.setIn(in);
+        Main.main(args);
+        boolean actual = asString().contains(expect);
+        assertTrue(actual);
+    }
+    
+    @Test
+    public void testInitialState() {
+        client = new ClientUI("username", "localhost", 8888);
+        int expected = 1;
+        int actual = client.getState();
+        assertEquals(expected, actual);
+    }
+    
+    @Test
+    public void testDraftState() {
+        client = new ClientUI("username", "localhost", 8888);
+        int expected = 2;
+        client.setState(2);
+        int actual = client.getState();
+        assertEquals(expected, actual);
+    }
+    
+//    @Test
+//    public void novo() throws IOException, ClassNotFoundException {
+//        client.run();
+//    }
+    
+
+    
+        //System.setOut(systemOut);
+        //System.out.print(client.getState());
 }
