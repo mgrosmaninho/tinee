@@ -1,4 +1,6 @@
+package sep.tinee.client;
 
+import sep.commands.*;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -24,20 +26,20 @@ import sep.tinee.net.message.Bye;
  * @author Manuel Gomes Rosmaninho
  */
 public class ClientUI {
+    
+    // private???
     public final String user;
-    public final String host;
-    public final int port;
+    //public final String host;
+    //public final int port;
+    
+    //good
     private final ClientChannel channel;
-    private final static String RESOURCE_PATH = "resources/MessageBundle";
+    private String draftTag = null;
+    private List<String> draftLines = new LinkedList<>();
+    private final ClientState state;
+    private final static String RESOURCE_PATH = "sep.resources/MessageBundle";
     public final ResourceBundle strings;
-    private String draftTag;
-    public List<String> draftLines = new LinkedList<>();
-    
-    public static final int DONE = 0;
-    public static final int MAIN = 1;
-    public static final int DRAFT = 2;
-    private int state;
-    
+        
     /**
      * Create the client
      * @param user the username
@@ -46,10 +48,10 @@ public class ClientUI {
      */
     public ClientUI(String user, String host, int port) {
         this.user = user;
-        this.host = host;
-        this.port = port;
+        //this.host = host;
+        //this.port = port;
         this.channel = new ClientChannel(host, port);
-        this.state = MAIN;
+        this.state = ClientState.MAIN;
         strings = ResourceBundle.getBundle(RESOURCE_PATH, new Locale("en", "GB"));
     }
     
@@ -87,10 +89,10 @@ public class ClientUI {
     private void menu(BufferedReader reader, ClientChannel channel)
             throws IOException {
         
-        while(DONE!=state) {
-            if(state==1) {
+        while(0!=state.getState()) {
+            if(state == ClientState.MAIN) {
                 System.out.print(strings.getString("main_state_message"));
-            } else if(state==2) {
+            } else if(state == ClientState.DRAFT) {
                 print(strings.getString("draft_state_message")
                         , printFormatDrafting(draftTag, draftLines));
             }
@@ -99,7 +101,7 @@ public class ClientUI {
             Command command;
             
             if("".equals(inputLine)) {
-                System.out.println(strings.getString("parse_command_message"));
+                printParseMessage();
                 continue;
             }
             
@@ -110,35 +112,35 @@ public class ClientUI {
 
             switch (cmd) {
                 case "read":
-                    command = new ReadCommand(this, channel, inputArgs);
+                    command = new ReadCommand(this, channel, inputArgs, state);
                     command.execute();
                     break;
                 case "manage":
-                    command = new ManageCommand(this, channel, inputArgs);
+                    command = new ManageCommand(this, channel, inputArgs, state);
                     command.execute();
                     break;
                 case "line":
-                    command = new LineCommand(this, inputArgs);
+                    command = new LineCommand(this, inputArgs, state);
                     command.execute();
                     break;
                 case "undo":
-                    command = new UndoCommand(this);
+                    command = new UndoCommand(this, state);
                     command.execute();
                     break;
                 case "push":
-                    command = new PushCommand(this, channel);
+                    command = new PushCommand(this, channel, state);
                     command.execute();
                     break;
                 case "close":
-                    command = new CloseCommand(this, channel);
+                    command = new CloseCommand(this, channel, state);
                     command.execute();
                     break;
                 case "exit":
-                    command = new ExitCommand(this);
+                    command = new ExitCommand(this, state);
                     command.execute();
                     break;
                 default:
-                    System.out.println(strings.getString("parse_command_message"));
+                    printParseMessage();
                     break;
             }
         }
@@ -161,11 +163,26 @@ public class ClientUI {
     }
     
     /**
+     * Create a new draftLines for user line inputs
+     */
+    public void createDraftLines() {
+        draftLines = new LinkedList<>();
+    }
+    
+    /**
      * Add String to draftLines.
      * @param line String to draftLines
      */
     public void addDraftLines(String line) {
         draftLines.add(line);
+    }
+    
+    /**
+     * Remove last line of draftLines (Undo Command)
+     * @param lastLine integer containing last line of the draftLines
+     */
+    public void removeDraftLines(int lastLine) {
+        draftLines.remove(lastLine);
     }
     
     /**
@@ -177,38 +194,22 @@ public class ClientUI {
     }
     
     /**
-     * Sets the current state.
-     * @param state the current state
-     */
-    public void setState(int state) {
-        this.state = state;
-    }
-    
-    /**
-     * Return the current state.
-     * @return the current state
-     */
-    public int getState() {
-        return state;
-    }
-    
-    /**
      * 
      * @param tag draftTags
      * @param lines draftLines
      * @return toString for Drafting State
      */
     public String printFormatDrafting(String tag, List<String> lines) {
-        StringBuilder b = new StringBuilder("# ");
-        b.append(tag);
+        StringBuilder str = new StringBuilder("# ");
+        str.append(tag);
         int i = 1;
         for (String x:lines) {
-            b.append("\n");
-            b.append(String.format("%12d", i++));
-            b.append("  ");
-            b.append(x);
+            str.append("\n");
+            str.append(String.format("%12d", i++));
+            str.append("  ");
+            str.append(x);
         }
-        return b.toString();
+        return str.toString();
     }
     
     /**
@@ -218,5 +219,12 @@ public class ClientUI {
      */
     public void print(String message, Object... params) {
         System.out.print(MessageFormat.format(message, params));
+    }
+    
+    /**
+     * Print parse command message to the user.
+     */
+    public void printParseMessage() {
+        System.out.println(strings.getString("parse_command_message"));
     }
 }

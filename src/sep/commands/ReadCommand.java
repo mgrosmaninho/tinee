@@ -1,9 +1,12 @@
+package sep.commands;
 
+import sep.tinee.client.ClientUI;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import sep.tinee.client.ClientState;
 import sep.tinee.net.channel.ClientChannel;
 import sep.tinee.net.message.ReadReply;
 import sep.tinee.net.message.ReadRequest;
@@ -17,17 +20,20 @@ public class ReadCommand implements Command {
     private final ClientUI client;
     private final ClientChannel channel;
     private final String[] inputArgs;
+    private final ClientState state;
     
     /**
      * Constructor for objects of class ReadCommand.
      * @param client the client UI
      * @param channel the communication to the server
      * @param inputArgs the command line arguments
+     * @param state the client state
      */
-    public ReadCommand(ClientUI client, ClientChannel channel, String[] inputArgs) {
+    public ReadCommand(ClientUI client, ClientChannel channel, String[] inputArgs, ClientState state) {
         this.client = client;
         this.channel = channel;
         this.inputArgs = inputArgs;
+        this.state = state;
     }
     
     /**
@@ -36,8 +42,8 @@ public class ReadCommand implements Command {
      */
     @Override
     public void execute() {
-        if(client.getState()!=1) {
-            System.out.println(client.strings.getString("parse_command_message"));
+        if(state.getState()!=1) {
+            client.printParseMessage();
             return;
         } else if(inputArgs.length < 1) {
             System.out.println(client.strings.getString("read_command_message"));
@@ -47,7 +53,7 @@ public class ReadCommand implements Command {
         try {
             channel.send(new ReadRequest(inputArgs[0]));
             ReadReply reply = (ReadReply) channel.receive();
-            System.out.print(formatRead(inputArgs[0], reply.users, reply.lines));
+            System.out.print(printFormatRead(inputArgs[0], reply.users, reply.lines));
         } catch (IOException | ClassNotFoundException ex) {
             Logger.getLogger(ReadCommand.class.getName())
                     .log(Level.SEVERE, null, ex);
@@ -55,23 +61,23 @@ public class ReadCommand implements Command {
     }
     
     /**
-     * Method to format the output for the Read Command.
+     * Method to print the output format for the Read Command.
      * @param tag inputArgs[0]
      * @param users user from server
      * @param read lines from server
      * @return toString with tinees from server
      */
-    String formatRead(String tag, List<String> users, List<String> read) {
-        StringBuilder b = new StringBuilder("Read: # ");
-        b.append(tag);
-        Iterator<String> it = read.iterator();
+    String printFormatRead(String tag, List<String> users, List<String> read) {
+        StringBuilder str = new StringBuilder("Read: # ");
+        str.append(tag);
+        Iterator<String> iter = read.iterator();
         for(String user:users) {
-            b.append("\n");
-            b.append(String.format("%12s", user));
-            b.append("  ");
-            b.append(it.next());
+            str.append("\n");
+            str.append(String.format("%12s", user));
+            str.append("  ");
+            str.append(iter.next());
         }
-        b.append("\n");
-        return b.toString();
+        str.append("\n");
+        return str.toString();
     }
 }

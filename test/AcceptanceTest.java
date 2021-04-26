@@ -1,36 +1,37 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 
-import static org.junit.Assert.*;
-import java.io.*;
+import sep.tinee.client.Main;
 import java.nio.charset.StandardCharsets;
-
+import java.io.*;
 import org.junit.*;
+import static org.junit.Assert.*;
+import sep.tinee.client.ClientState;
 import sep.tinee.server.Server;
 
 /**
+ * Acceptance Test
+ * 
  * @author Manuel Gomes Rosmaninho
  */
-public class ClientUITest {
+public class AcceptanceTest {
 
-    private ClientUI client;
+    private ClientState state;
     private Server server;
     private final String[] args = {"username", "localhost", "8888"};
     
     private final InputStream systemIn = System.in;
     private final PrintStream systemOut = System.out;
     
-    private ByteArrayInputStream testIn;
-    private ByteArrayOutputStream testOut;
+    //private ByteArrayInputStream testIn;
+    private static ByteArrayOutputStream testOut;
         
-    public ClientUITest() {
+    public AcceptanceTest() {
     }
     
     @BeforeClass
     public static void setUpClass() {
+        //client = new ClientUI("username", "localhost", 8888);
+        testOut = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(testOut));
     }
     
     @AfterClass
@@ -40,8 +41,6 @@ public class ClientUITest {
     @Before
     public void setUp() throws IOException {
         //client = new ClientUI("username", "localhost", 8888);
-        testOut = new ByteArrayOutputStream();
-        System.setOut(new PrintStream(testOut));
         //System.setOut(systemOut);
         this.server = new Server(8888);
         new Thread(() -> this.server.run()).start();
@@ -316,25 +315,32 @@ public class ClientUITest {
         assertTrue(actual);
     }
     
+    /**
+     * Test of Main State
+     */
     @Test
-    public void testInitialState() {
-        client = new ClientUI("username", "localhost", 8888);
+    public void testMainState() {
+        state = ClientState.MAIN;
+        state.setState(1);
         int expected = 1;
-        int actual = client.getState();
+        int actual = state.getState();
         assertEquals(expected, actual);
     }
     
+    /**
+     * Test of Draft State
+     */
     @Test
     public void testDraftState() {
-        client = new ClientUI("username", "localhost", 8888);
+        state = ClientState.MAIN;
+        state.setState(2);
         int expected = 2;
-        client.setState(2);
-        int actual = client.getState();
+        int actual = state.getState();
         assertEquals(expected, actual);
     }
     
 //    @Test
-//    public void novo() throws IOException, ClassNotFoundException {
+//    public void new() throws IOException, ClassNotFoundException {
 //        client.run();
 //    }
     

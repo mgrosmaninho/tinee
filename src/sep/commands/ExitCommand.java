@@ -1,3 +1,8 @@
+package sep.commands;
+
+import sep.tinee.client.ClientState;
+import sep.tinee.client.ClientUI;
+
 /**
  * Implementation of the 'exit' user command.
  * 
@@ -5,13 +10,16 @@
  */
 public class ExitCommand implements Command {
     private final ClientUI client;
+    private final ClientState state;
     
     /**
      * Constructor for objects of class ExitCommand.
      * @param client the client UI
+     * @param state the client state
      */
-    public ExitCommand(ClientUI client) {
+    public ExitCommand(ClientUI client, ClientState state) {
         this.client = client;
+        this.state = state;
     }
     
     /**
@@ -20,6 +28,6 @@ public class ExitCommand implements Command {
     @Override
     public void execute() {
         System.out.print(client.strings.getString("goodbye_message"));
-        client.setState(0);
+        state.setState(0);
     }
 }

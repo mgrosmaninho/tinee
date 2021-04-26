@@ -1,7 +1,10 @@
+package sep.commands;
 
+import sep.tinee.client.ClientUI;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import sep.tinee.client.ClientState;
 import sep.tinee.net.channel.ClientChannel;
 import sep.tinee.net.message.Push;
 import sep.tinee.net.message.ReadReply;
@@ -15,15 +18,18 @@ import sep.tinee.net.message.ReadRequest;
 public class CloseCommand implements Command {
     private final ClientUI client;
     private final ClientChannel channel;
+    private final ClientState state;
     
     /**
      * Constructor for objects of class CloseCommand.
      * @param client the client UI
      * @param channel the communication to the server
+     * @param state the client state
      */
-    public CloseCommand(ClientUI client, ClientChannel channel) {
+    public CloseCommand(ClientUI client, ClientChannel channel, ClientState state) {
         this.client = client;
         this.channel = channel;
+        this.state = state;
     }
     
     /**
@@ -31,8 +37,8 @@ public class CloseCommand implements Command {
      */
     @Override
     public void execute() {
-        if(client.getState()!=2) {
-            System.out.println(client.strings.getString("parse_command_message"));
+        if(state.getState()!=2) {
+            client.printParseMessage();
             return;
         }
         try {
@@ -40,6 +46,7 @@ public class CloseCommand implements Command {
             ReadReply reply = (ReadReply) channel.receive();
             String replyUser = reply.users.get(0);
             if(client.user.equals(replyUser)) {
+                client.createDraftLines();
                 client.addDraftLines(Push.CLOSE_LINE);
                 channel.send(new Push(client.user, client.getDraftTag(), client.getDraftLines()));
             } else {
@@ -49,6 +56,6 @@ public class CloseCommand implements Command {
             Logger.getLogger(ReadCommand.class.getName())
                     .log(Level.SEVERE, null, ex);
         }
-        client.setState(1);
+        state.setState(1);
     }
 }

@@ -1,3 +1,5 @@
+package sep.commands;
+
 /**
  * This class is an interface for all command classes.
  * Each user command is implemented by a specific command subclass.

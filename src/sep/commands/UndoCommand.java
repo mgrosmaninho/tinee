@@ -1,3 +1,7 @@
+package sep.commands;
+
+import sep.tinee.client.ClientState;
+import sep.tinee.client.ClientUI;
 
 /**
  * Implementation of the 'undo' user command.
@@ -6,26 +10,30 @@
  */
 public class UndoCommand implements Command {
     private final ClientUI client;
+    private final ClientState state;
     
     /**
      * Constructor for objects of class UndoCommand.
      * @param client ClientUI
+     * @param state the client state
      */
-    public UndoCommand(ClientUI client) {
+    public UndoCommand(ClientUI client, ClientState state) {
         this.client = client;
+        this.state = state;
     }
     /**
      * 'Undo' was entered.
      */
     @Override
     public void execute() {
-        if(client.getState()!=2) {
-            System.out.println(client.strings.getString("parse_command_message"));
+        if(state.getState()!=2) {
+            client.printParseMessage();
             return;
         } else if(client.getDraftLines().isEmpty()) {
             System.out.println(client.strings.getString("undo_command_message"));
             return;
         }
-        client.draftLines.remove(client.draftLines.size()-1);
+        int lastLine = client.getDraftLines().size()-1;
+        client.removeDraftLines(lastLine);
     }
 }

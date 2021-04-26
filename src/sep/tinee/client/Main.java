@@ -1,3 +1,4 @@
+package sep.tinee.client;
 
 import java.io.IOException;
 

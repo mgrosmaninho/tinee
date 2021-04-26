@@ -1,3 +1,7 @@
+package sep.commands;
+
+import sep.tinee.client.ClientState;
+import sep.tinee.client.ClientUI;
 
 /**
  * Implementation of the 'line' user command.
@@ -7,15 +11,18 @@
 public class LineCommand implements Command {
     private final ClientUI client;
     private final String[] inputArgs;
+    private final ClientState state;
     
     /**
      * Constructor for objects of class LineCommand.
      * @param client the client UI
      * @param inputArgs the command line arguments
+     * @param state the client state
      */
-    public LineCommand(ClientUI client, String[] inputArgs) {
+    public LineCommand(ClientUI client, String[] inputArgs, ClientState state) {
         this.client = client;
         this.inputArgs = inputArgs;
+        this.state = state;
     }
     
     /**
@@ -23,8 +30,8 @@ public class LineCommand implements Command {
      */
     @Override
     public void execute() {
-        if(client.getState()!=2) {
-            System.out.println(client.strings.getString("parse_command_message"));
+        if(state.getState()!=2) {
+            client.printParseMessage();
             return;
         } else if(inputArgs.length < 1) {
             System.out.println(client.strings.getString("line_command_message"));
