@@ -90,9 +90,9 @@ public class ClientUI {
             throws IOException {
         
         while(0!=state.getState()) {
-            if(state == ClientState.MAIN) {
+            if(state.getState()==1) {
                 System.out.print(strings.getString("main_state_message"));
-            } else if(state == ClientState.DRAFT) {
+            } else if(state.getState()==2) {
                 print(strings.getString("draft_state_message")
                         , printFormatDrafting(draftTag, draftLines));
             }

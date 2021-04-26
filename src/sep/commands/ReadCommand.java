@@ -71,10 +71,10 @@ public class ReadCommand implements Command {
         StringBuilder str = new StringBuilder("Read: # ");
         str.append(tag);
         Iterator<String> iter = read.iterator();
-        for(String user:users) {
+        for(String user : users) {
             str.append("\n");
-            str.append(String.format("%12s", user));
-            str.append("  ");
+            str.append(String.format("user: %s", user));
+            str.append("    tinee: ");
             str.append(iter.next());
         }
         str.append("\n");
