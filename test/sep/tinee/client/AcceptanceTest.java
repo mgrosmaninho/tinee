@@ -1,10 +1,9 @@
+package sep.tinee.client;
 
-import sep.tinee.client.Main;
 import java.nio.charset.StandardCharsets;
 import java.io.*;
 import org.junit.*;
 import static org.junit.Assert.*;
-import sep.tinee.client.ClientState;
 import sep.tinee.server.Server;
 
 /**
