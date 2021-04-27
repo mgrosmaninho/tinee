@@ -313,38 +313,7 @@ public class AcceptanceTest {
         boolean actual = asString().contains(expect);
         assertTrue(actual);
     }
-    
-    /**
-     * Test of Main State
-     */
-    @Test
-    public void testMainState() {
-        state = ClientState.MAIN;
-        state.setState(1);
-        int expected = 1;
-        int actual = state.getState();
-        assertEquals(expected, actual);
-    }
-    
-    /**
-     * Test of Draft State
-     */
-    @Test
-    public void testDraftState() {
-        state = ClientState.MAIN;
-        state.setState(2);
-        int expected = 2;
-        int actual = state.getState();
-        assertEquals(expected, actual);
-    }
-    
-//    @Test
-//    public void new() throws IOException, ClassNotFoundException {
-//        client.run();
-//    }
-    
-
-    
+        
         //System.setOut(systemOut);
         //System.out.print(client.getState());
 }
