@@ -122,6 +122,45 @@ public class AcceptanceTest {
     }
     
     /**
+     * Test of Show Command
+     * @throws java.io.IOException
+     * @throws java.lang.ClassNotFoundException
+     */
+    @Test
+    public void testShowCommand() throws IOException, ClassNotFoundException {
+        String input = "manage foo\nlinefoo1\nshow\nexit\n";
+        ByteArrayInputStream in = new ByteArrayInputStream(input.getBytes(StandardCharsets.UTF_8));
+        System.setIn(in);
+        Main.main(args);
+    }
+    
+    /**
+     * Test of Show Command without arguments in the server
+     * @throws java.io.IOException
+     * @throws java.lang.ClassNotFoundException
+     */
+    @Test
+    public void testShowCommandWithoutArgs() throws IOException, ClassNotFoundException {
+        String input = "show\nexit\n";
+        ByteArrayInputStream in = new ByteArrayInputStream(input.getBytes(StandardCharsets.UTF_8));
+        System.setIn(in);
+        Main.main(args);
+    }
+    
+    /**
+     * Test of Show Command out of Main State
+     * @throws java.io.IOException
+     * @throws java.lang.ClassNotFoundException
+     */
+    @Test
+    public void testShowCommandOutMainState() throws IOException, ClassNotFoundException {
+        String input = "manage foo\nshow\nexit\n";
+        ByteArrayInputStream in = new ByteArrayInputStream(input.getBytes(StandardCharsets.UTF_8));
+        System.setIn(in);
+        Main.main(args);
+    }
+    
+    /**
      * Test of Manage Command
      * @throws java.io.IOException
      * @throws java.lang.ClassNotFoundException
@@ -207,6 +246,45 @@ public class AcceptanceTest {
     @Test
     public void testLineCommandMultipleArgs() throws IOException, ClassNotFoundException {
         String input = "manage foo\nline foo1 foo2 foo3\npush\nread foo\nexit\n";
+        ByteArrayInputStream in = new ByteArrayInputStream(input.getBytes(StandardCharsets.UTF_8));
+        System.setIn(in);
+        Main.main(args);
+    }
+    
+    /**
+     * Test of Discard Command
+     * @throws java.io.IOException
+     * @throws java.lang.ClassNotFoundException
+     */
+    @Test
+    public void testDiscardCommand() throws IOException, ClassNotFoundException {
+        String input = "manage foo\nline foo1\ndiscard\nexit\n";
+        ByteArrayInputStream in = new ByteArrayInputStream(input.getBytes(StandardCharsets.UTF_8));
+        System.setIn(in);
+        Main.main(args);
+    }
+    
+    /**
+     * Test of Discard Command with empty lines
+     * @throws java.io.IOException
+     * @throws java.lang.ClassNotFoundException
+     */
+    @Test
+    public void testDiscardCommandEmptyLines() throws IOException, ClassNotFoundException {
+        String input = "manage foo\ndiscard\nexit\n";
+        ByteArrayInputStream in = new ByteArrayInputStream(input.getBytes(StandardCharsets.UTF_8));
+        System.setIn(in);
+        Main.main(args);
+    }
+    
+    /**
+     * Test of Discard Command out of Draft State
+     * @throws java.io.IOException
+     * @throws java.lang.ClassNotFoundException
+     */
+    @Test
+    public void testDiscardCommandOutDraftState() throws IOException, ClassNotFoundException {
+        String input = "discard\nexit\n";
         ByteArrayInputStream in = new ByteArrayInputStream(input.getBytes(StandardCharsets.UTF_8));
         System.setIn(in);
         Main.main(args);
@@ -303,8 +381,13 @@ public class AcceptanceTest {
         Main.main(args);
     }
     
+    /**
+     * Test of output message on exit
+     * @throws IOException
+     * @throws ClassNotFoundException 
+     */
     @Test
-    public void test() throws IOException, ClassNotFoundException {
+    public void testExitMessage() throws IOException, ClassNotFoundException {
         String input = "exit\n";
         String expect = "Good bye";
         ByteArrayInputStream in = new ByteArrayInputStream(input.getBytes(StandardCharsets.UTF_8));

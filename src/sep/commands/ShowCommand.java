@@ -44,15 +44,15 @@ public class ShowCommand implements Command {
         try {
             channel.send(new ShowRequest());
             ShowReply reply = (ShowReply) channel.receive();
-            System.out.print(reply.toString());
+            if(reply.tags.isEmpty()) {
+                System.out.println(client.strings.getString("show_command_message"));
+                return;
+            }
+            reply.tags.forEach((x,y) -> System.out.println(
+                    "UserID: " + y + "    Tag: " + x));
         } catch (IOException | ClassNotFoundException ex) {
             Logger.getLogger(ReadCommand.class.getName())
                     .log(Level.SEVERE, null, ex);
         }
     }
-    
-//    String printFormatShow(LinkedHashMap<String, String> tags) {
-//        
-//        return str.toString();
-//    }
 }

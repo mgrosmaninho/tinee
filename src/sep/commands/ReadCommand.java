@@ -67,14 +67,14 @@ public class ReadCommand implements Command {
      * @param read lines from server
      * @return toString with tines from server
      */
-    String printFormatRead(String tag, List<String> users, List<String> read) {
+    private String printFormatRead(String tag, List<String> users, List<String> read) {
         StringBuilder str = new StringBuilder("Read: # ");
         str.append(tag);
         Iterator<String> iter = read.iterator();
         for(String user : users) {
             str.append("\n");
-            str.append(String.format("user: %s", user));
-            str.append("    tinee: ");
+            str.append(String.format("UserID: %s", user));
+            str.append("    Tinee: ");
             str.append(iter.next());
         }
         str.append("\n");
