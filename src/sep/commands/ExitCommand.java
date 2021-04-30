@@ -5,6 +5,7 @@ import sep.tinee.client.ClientUI;
 
 /**
  * Implementation of the 'exit' user command.
+ * Terminate the application.
  * 
  * @author Manuel Gomes Rosmaninho
  */

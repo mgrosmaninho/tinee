@@ -13,6 +13,7 @@ import sep.tinee.net.message.ReadRequest;
 
 /**
  * Implementation of the 'read' user command.
+ * Read the current tines for [tag] on the server.
  * 
  * @author Manuel Gomes Rosmaninho
  */
@@ -37,8 +38,7 @@ public class ReadCommand implements Command {
     }
     
     /**
-     * 'Read' was entered. Sends a read request to server and prints
-     * its reply.
+     * 'Read' was entered. Sends a read request to server and prints its reply.
      */
     @Override
     public void execute() {
@@ -65,7 +65,7 @@ public class ReadCommand implements Command {
      * @param tag inputArgs[0]
      * @param users user from server
      * @param read lines from server
-     * @return toString with tinees from server
+     * @return toString with tines from server
      */
     String printFormatRead(String tag, List<String> users, List<String> read) {
         StringBuilder str = new StringBuilder("Read: # ");

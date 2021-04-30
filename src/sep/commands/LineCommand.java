@@ -5,6 +5,7 @@ import sep.tinee.client.ClientUI;
 
 /**
  * Implementation of the 'line' user command.
+ * Add a line of text to the current draft.
  * 
  * @author Manuel Gomes Rosmaninho
  */

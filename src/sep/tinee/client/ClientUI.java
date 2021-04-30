@@ -11,6 +11,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
+import java.util.Stack;
 import java.util.stream.Collectors;
 import sep.tinee.net.channel.ClientChannel;
 import sep.tinee.net.message.Bye;
@@ -97,9 +98,8 @@ public class ClientUI {
                         , printFormatDrafting(draftTag, draftLines));
             }
             
-            String inputLine = reader.readLine();
             Command command;
-            
+            String inputLine = reader.readLine();
             if("".equals(inputLine)) {
                 printParseMessage();
                 continue;
@@ -115,12 +115,20 @@ public class ClientUI {
                     command = new ReadCommand(this, channel, inputArgs, state);
                     command.execute();
                     break;
+                case "show":
+                    command = new ShowCommand(this, channel, state);
+                    command.execute();
+                    break;
                 case "manage":
                     command = new ManageCommand(this, channel, inputArgs, state);
                     command.execute();
                     break;
                 case "line":
                     command = new LineCommand(this, inputArgs, state);
+                    command.execute();
+                    break;
+                case "discard":
+                    command = new DiscardCommand(this, state);
                     command.execute();
                     break;
                 case "undo":
@@ -145,7 +153,7 @@ public class ClientUI {
             }
         }
     }
-    
+        
     /**
      * Set DraftTag.
      * @param inputArgs String to draftTag

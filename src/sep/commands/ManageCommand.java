@@ -12,6 +12,7 @@ import sep.tinee.net.message.ReadRequest;
 
 /**
  * Implementation of the 'manage' user command.
+ * Start drafting new tines to add to [tag].
  * 
  * @author Manuel Gomes Rosmaninho
  */

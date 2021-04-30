@@ -10,6 +10,7 @@ import sep.tinee.net.message.Push;
 
 /**
  * Implementation of the 'push' user command.
+ * Push the drafted tines to the server.
  * 
  * @author Manuel Gomes Rosmaninho
  */
@@ -44,7 +45,6 @@ public class PushCommand implements Command {
         }
         try {
             channel.send(new Push(client.user, client.getDraftTag(), client.getDraftLines()));
-            //client.draftLines = new LinkedList<>();
             client.createDraftLines();
         } catch (IOException ex) {
             Logger.getLogger(PushCommand.class.getName())
