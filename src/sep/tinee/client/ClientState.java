@@ -14,7 +14,7 @@ public enum ClientState {
     
     /**
      * Initialise with the corresponding state.
-     * @param state The integer state
+     * @param state the integer state
      */
     ClientState(int state) {
         this.state = state;

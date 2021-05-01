@@ -28,6 +28,9 @@ public class LineCommand implements Command {
     
     /**
      * 'Line' was entered.
+     * Verify if state is Draft.
+     * Verify if command contain arguments.
+     * Call method in clientUI to add the line to DraftLines.
      */
     @Override
     public void execute() {

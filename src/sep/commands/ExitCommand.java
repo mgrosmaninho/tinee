@@ -24,7 +24,8 @@ public class ExitCommand implements Command {
     }
     
     /**
-     * 'Exit' was entered. Prints message.
+     * 'Exit' was entered.
+     * Prints message to user. Sets state to 0 (DONE).
      */
     @Override
     public void execute() {

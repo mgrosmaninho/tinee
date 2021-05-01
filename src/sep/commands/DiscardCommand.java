@@ -25,6 +25,10 @@ public class DiscardCommand implements Command {
     
     /**
      * 'Discard' was entered.
+     * Verify if state is Draft.
+     * Verify if DraftLines is empty.
+     * Calls the method in clientUI to create a new DraftLines.
+     * Sets state to 1 (MAIN).
      */
     @Override
     public void execute() {

@@ -37,6 +37,11 @@ public class ManageCommand implements Command {
     }
      /**
       * 'Manage' was entered.
+      * Verify if state is Main.
+      * Verify if command contain arguments.
+      * Verify if the [tag] selected is not empty. If not empty, verifies if
+      * last line contain ##CLOSE##.
+      * Sets state to 2 (DRAFT).
       */
     @Override
     public void execute() {

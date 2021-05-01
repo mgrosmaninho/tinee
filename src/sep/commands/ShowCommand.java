@@ -33,7 +33,10 @@ public class ShowCommand implements Command {
     }
     
     /**
-     * 'Show' was entered. Sends a show request to server and prints its reply.
+     * 'Show' was entered.
+     * Verify if state is Main.
+     * Verify if there is [tags] to show.
+     * Sends a show request to server and prints its reply.
      */
     @Override
     public void execute() {

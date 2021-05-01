@@ -12,6 +12,7 @@ import sep.tinee.net.message.ReadRequest;
 
 /**
  * Implementation of the 'close' user command.
+ * Closes the ticket on the server.
  * 
  * @author Manuel Gomes Rosmaninho
  */
@@ -34,6 +35,10 @@ public class CloseCommand implements Command {
     
     /**
      * 'Close' was entered.
+     * Verify if state is Draft.
+     * Verify if the current user is the ticket creator of the [tag], if so
+     * pushes ##CLOSE## to the server and sets state to 1 (MAIN) else print a
+     * message to the user.
      */
     @Override
     public void execute() {
@@ -45,10 +50,10 @@ public class CloseCommand implements Command {
             channel.send(new ReadRequest(client.getDraftTag()));
             ReadReply reply = (ReadReply) channel.receive();
             String replyUser = reply.users.get(0);
-            if(client.user.equals(replyUser)) {
+            if(client.getUser().equals(replyUser)) {
                 client.createDraftLines();
                 client.addDraftLines(Push.CLOSE_LINE);
-                channel.send(new Push(client.user, client.getDraftTag(), client.getDraftLines()));
+                channel.send(new Push(client.getUser(), client.getDraftTag(), client.getDraftLines()));
             } else {
                 System.out.println(client.strings.getString("close_command_message"));
             }

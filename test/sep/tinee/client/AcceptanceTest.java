@@ -13,14 +13,10 @@ import sep.tinee.server.Server;
  */
 public class AcceptanceTest {
 
-    private ClientState state;
     private Server server;
     private final String[] args = {"username", "localhost", "8888"};
-    
     private final InputStream systemIn = System.in;
     private final PrintStream systemOut = System.out;
-    
-    //private ByteArrayInputStream testIn;
     private static ByteArrayOutputStream testOut;
         
     public AcceptanceTest() {
@@ -28,7 +24,6 @@ public class AcceptanceTest {
     
     @BeforeClass
     public static void setUpClass() {
-        //client = new ClientUI("username", "localhost", 8888);
         testOut = new ByteArrayOutputStream();
         System.setOut(new PrintStream(testOut));
     }
@@ -39,8 +34,6 @@ public class AcceptanceTest {
     
     @Before
     public void setUp() throws IOException {
-        //client = new ClientUI("username", "localhost", 8888);
-        //System.setOut(systemOut);
         this.server = new Server(8888);
         new Thread(() -> this.server.run()).start();
     }
@@ -396,7 +389,4 @@ public class AcceptanceTest {
         boolean actual = asString().contains(expect);
         assertTrue(actual);
     }
-        
-        //System.setOut(systemOut);
-        //System.out.print(client.getState());
 }

@@ -33,6 +33,10 @@ public class PushCommand implements Command {
     
     /**
      * 'Push' was entered.
+     * Verify if state is Draft.
+     * Verify if DraftLines is empty.
+     * Pushes user, tag and lines to server. Calls the method in clientUI to
+     * create a new DraftLines. Sets state to 1 (MAIN).
      */
     @Override
     public void execute() {
@@ -44,7 +48,7 @@ public class PushCommand implements Command {
             return;
         }
         try {
-            channel.send(new Push(client.user, client.getDraftTag(), client.getDraftLines()));
+            channel.send(new Push(client.getUser(), client.getDraftTag(), client.getDraftLines()));
             client.createDraftLines();
         } catch (IOException ex) {
             Logger.getLogger(PushCommand.class.getName())

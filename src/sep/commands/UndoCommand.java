@@ -5,6 +5,7 @@ import sep.tinee.client.ClientUI;
 
 /**
  * Implementation of the 'undo' user command.
+ * Undo of appropriate commands in the Draft state.
  * 
  * @author Manuel Gomes Rosmaninho
  */
@@ -23,6 +24,9 @@ public class UndoCommand implements Command {
     }
     /**
      * 'Undo' was entered.
+     * Verify if state is Draft.
+     * Verify if DraftLines is empty.
+     * Gets the index of the last line and remove.
      */
     @Override
     public void execute() {

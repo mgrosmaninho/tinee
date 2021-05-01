@@ -38,7 +38,10 @@ public class ReadCommand implements Command {
     }
     
     /**
-     * 'Read' was entered. Sends a read request to server and prints its reply.
+     * 'Read' was entered.
+     * Verify if state is Main.
+     * Verify if command contain arguments.
+     * Sends a read request to server and prints its reply.
      */
     @Override
     public void execute() {

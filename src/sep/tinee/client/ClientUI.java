@@ -26,30 +26,26 @@ import sep.tinee.net.message.Bye;
  * @author Manuel Gomes Rosmaninho
  */
 public class ClientUI {
-    
-    // private???
-    public final String user;
-    //public final String host;
-    //public final int port;
-    
-    //good
+    private final String user;
+    private final String host;
+    private final int port;
     private final ClientChannel channel;
+    private final ClientState state;
     private String draftTag = null;
     private List<String> draftLines = new LinkedList<>();
-    private final ClientState state;
     private final static String RESOURCE_PATH = "sep.resources/MessageBundle";
     public final ResourceBundle strings;
-        
+    
     /**
-     * Create the client
+     * Constructor for objects of class ClientUI.
      * @param user the username
      * @param host the host name
      * @param port the port number
      */
     public ClientUI(String user, String host, int port) {
         this.user = user;
-        //this.host = host;
-        //this.port = port;
+        this.host = host;
+        this.port = port;
         this.channel = new ClientChannel(host, port);
         this.state = ClientState.MAIN;
         strings = ResourceBundle.getBundle(RESOURCE_PATH, new Locale("en", "GB"));
@@ -152,7 +148,31 @@ public class ClientUI {
             }
         }
     }
-        
+    
+    /**
+     * Return the user.
+     * @return user
+     */
+    public String getUser() {
+        return this.user;
+    }
+    
+    /**
+     * Return the host.
+     * @return host
+     */
+    public String getHost() {
+        return this.host;
+    }
+    
+    /**
+     * Return the port.
+     * @return port
+     */
+    public int getPort() {
+        return this.port;
+    }
+    
     /**
      * Set DraftTag.
      * @param inputArgs String to draftTag
@@ -166,7 +186,7 @@ public class ClientUI {
      * @return draftTag
      */
     public String getDraftTag() {
-        return draftTag;
+        return this.draftTag;
     }
     
     /**
