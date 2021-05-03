@@ -49,6 +49,7 @@ public class ClientUI {
         this.channel = new ClientChannel(host, port);
         this.state = ClientState.MAIN;
         strings = ResourceBundle.getBundle(RESOURCE_PATH, new Locale("en", "GB"));
+        //strings = ResourceBundle.getBundle(RESOURCE_PATH, new Locale("pt", "PT"));
     }
     
     /**
