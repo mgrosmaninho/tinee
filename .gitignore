@@ -2,7 +2,6 @@ out/
 nbproject/
 build/
 .DS_Store
-.idea/
 build.xml
 manifest.mf
 tinee.iml
