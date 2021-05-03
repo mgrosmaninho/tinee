@@ -51,8 +51,8 @@ public class ShowCommand implements Command {
                 System.out.println(client.strings.getString("show_command_message"));
                 return;
             }
-            reply.tags.forEach((x,y) -> System.out.println(
-                    "UserID: " + y + "    Tag: " + x));
+            reply.tags.forEach((tag, userid) -> System.out.println(
+                    "UserID: " + userid + "    Tag: " + tag));
         } catch (IOException | ClassNotFoundException ex) {
             Logger.getLogger(ReadCommand.class.getName())
                     .log(Level.SEVERE, null, ex);

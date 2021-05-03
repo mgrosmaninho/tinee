@@ -17,22 +17,27 @@ public class ClientStateTest {
     private ClientState state;
     
     public ClientStateTest() {
+        //empty constructor
     }
     
     @BeforeClass
     public static void setUpClass() {
+        //empty constructor
     }
     
     @AfterClass
     public static void tearDownClass() {
+        //empty constructor
     }
     
     @Before
     public void setUp() {
+        //empty constructor
     }
     
     @After
     public void tearDown() {
+        //empty constructor
     }
 
     /**

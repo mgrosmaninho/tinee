@@ -20,6 +20,7 @@ public class AcceptanceTest {
     private static ByteArrayOutputStream testOut;
         
     public AcceptanceTest() {
+        //empty constructor
     }
     
     @BeforeClass
@@ -30,6 +31,7 @@ public class AcceptanceTest {
     
     @AfterClass
     public static void tearDownClass() {
+        //empty constructor
     }
     
     @Before
